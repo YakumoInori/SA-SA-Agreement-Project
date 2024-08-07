@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Acupuncture Informed Consent to Treat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        h1, h2, h3 {
+            text-align: center;
+        }
+        p {
+            text-align: justify;
+            margin: 10px 0;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], input[type="date"] {
+            width: calc(100% - 22px);
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        canvas {
+            border: 1px solid black;
+            touch-action: none; /* 禁止触摸屏的默认行为 */
+        }
+        .signature-section {
+            margin-top: 20px;
+        }
+        button {
+            margin-top: 10px;
+        }
+        .signature-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .signature-box {
+            width: 100%;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+        .button-group button {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+<h1>ACUPUNCTURE INFORMED CONSENT TO TREAT</h1>
+
+<p>I hereby request and consent to the performance of acupuncture treatments and other procedures within the scope of practice of acupuncture on me (or on the patient named below, for whom I am legally responsible) by the acupuncturist named below and/or other licensed acupuncturists who now or in the future treat me while employed by, working or associated with or serving as back-up for acupuncturists named below, including those working at the clinic or office listed below or any other office or clinic, whether signatories to this form or not.</p>
+
+<p>I understand that methods of treatment may include, but are not limited to, acupuncture, moxibustion, cupping, electrical stimulation, Tui-Na (Chinese Massage), Chinese herbal medicine, and nutritional counseling. I understand that the herbs may need to be prepared and the teas consumed according to the instructions provided orally and in writing. The herbs may have an unpleasant smell or taste. I will immediately notify a member of the clinical staff of any unanticipated or unpleasant effects associated with the consumption of the herbs.</p>
+
+<p>I have been informed that acupuncture is a generally safe method of treatment, but that it may have some side effects, including bruising, numbness or tingling near the needling sites that may last a few days, and dizziness or fainting. Burns and/or scarring are a potential risk of moxibustion and cupping, or when treatment involves the use of heat lamps. Bruising is a common side effect of cupping. Unusual risks of acupuncture include spontaneous miscarriage, nerve damage and organ puncture, including lung puncture (pneumothorax). Infection is another possible risk, although the clinic uses sterile disposable needles and maintains a clean and safe environment.</p>
+
+<p>I understand that while this document describes the major risks of treatment, other side effects and risks may occur. The herbs and nutritional supplements (which are from plant, animal, and mineral sources) that have been recommended are traditionally considered safe in the practice of Chinese medicine, although some may be toxic in large doses. I understand that some herbs may be inappropriate during pregnancy. Some possible side effects of taking herbs are nausea, gas, stomachache, vomiting, headache, diarrhea, rashes, hives, and tingling of the tongue. I will notify a clinical staff member who is caring for me if I am or become pregnant.</p>
+
+<p>I do not expect the clinical staff to be able to anticipate and explain all possible risks and complications of treatment, and I wish to rely on the clinical staff to exercise judgment during the course of treatment which the clinical staff thinks at the time, based upon the facts then known is in my best interest. I understand that results are not guaranteed.</p>
+
+<p>I understand the clinical and administrative staff may review my patient records and lab reports, but all my records will be kept confidential and will not be released without my written consent.</p>
+
+<p>By voluntarily signing below, I show that I have read, or have had read to me, the above consent to treatment, have been told about the risks and benefits of acupuncture and other procedures, and have had an opportunity to ask questions. I intend this consent form to cover the entire course of treatment for my present condition and for any future condition(s) for which I seek treatment.</p>
+
+<p>In addition, I hereby consent to the 24 hr. cancellation policy whereby I agree to inform the clinical staff of my intent to cancel and avoid charges applicable for treatment time. Under this policy, I am aware that all appointments not cancelled within the 24 hr. period will incur regular fees.</p>
+
+<label for="signatureType">Select Signature Type</label>
+<select id="signatureType" onchange="toggleSignatureType()">
+    <option value="typed">Typed Signature</option>
+    <option value="handwritten">Handwritten Signature</option>
+</select>
+
+<div class="signature-container">
+    <div id="typedSignature" class="signature-box">
+        <label for="typedSignatureInput">PATIENT SIGNATURE (Typed)</label>
+        <input type="text" id="typedSignatureInput" placeholder="Enter signature">
+        <button type="button" onclick="saveTypedSignature()">Save Typed Signature</button>
+    </div>
+    <div id="handwrittenSignature" class="signature-box" style="display: none;">
+        <label for="signatureCanvas">PATIENT SIGNATURE (Handwritten)</label>
+        <canvas id="signatureCanvas" width="500" height="200"></canvas>
+        <button type="button" onclick="clearCanvas()">Clear</button>
+        <button type="button" onclick="saveHandwrittenSignature()">Save Signature</button>
+    </div>
+</div>
+
+<label for="signDate">Date</label>
+<input type="date" id="signDate" name="signDate" class="date-input">
+
+<p>(Or Patient Representative) (Indicate relationship if signing for patient)</p>
+
+<div class="button-group">
+    <button type="button" onclick="generateFinalPage()">Finish</button>
+</div>
+
+<script>
+    function toggleSignatureType() {
+        var signatureType = document.getElementById('signatureType').value;
+        if (signatureType === 'typed') {
+            document.getElementById('typedSignature').style.display = 'block';
+            document.getElementById('handwrittenSignature').style.display = 'none';
+        } else {
+            document.getElementById('typedSignature').style.display = 'none';
+            document.getElementById('handwrittenSignature').style.display = 'block';
+        }
+    }
+
+    var canvas = document.getElementById('signatureCanvas');
+    var ctx = canvas.getContext('2d');
+    var drawing = false;
+
+    canvas.addEventListener('mousedown', function(e) {
+        drawing = true;
+        ctx.beginPath();
+        ctx.moveTo(e.offsetX, e.offsetY);
+    });
+
+    canvas.addEventListener('mousemove', function(e) {
+        if (drawing) {
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+        }
+    });
+
+    canvas.addEventListener('mouseup', function() {
+        drawing = false;
+    });
+
+    canvas.addEventListener('mouseout', function() {
+        drawing = false;
+    });
+
+    canvas.addEventListener('touchstart', function(e) {
+        drawing = true;
+        ctx.beginPath();
+        ctx.moveTo(e.touches[0].clientX - canvas.offsetLeft, e.touches[0].clientY - canvas.offsetTop);
+    });
+
+    canvas.addEventListener('touchmove', function(e) {
+        if (drawing) {
+            ctx.lineTo(e.touches[0].clientX - canvas.offsetLeft, e.touches[0].clientY - canvas.offsetTop);
+            ctx.stroke();
+        }
+    });
+
+    canvas.addEventListener('touchend', function() {
+        drawing = false;
+    });
+
+    function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function saveHandwrittenSignature() {
+        var dataURL = canvas.toDataURL('image/png');
+        localStorage.setItem('signatureImage', dataURL);
+        alert('Handwritten signature saved');
+    }
+
+    function saveTypedSignature() {
+        var textSignature = document.getElementById('typedSignatureInput').value;
+        localStorage.setItem('textSignature', textSignature);
+        alert('Typed signature saved');
+    }
+
+    function generateFinalPage() {
+        var signatureType = document.getElementById('signatureType').value;
+        var signatureImage = localStorage.getItem('signatureImage');
+        var textSignature = localStorage.getItem('textSignature');
+        var signDate = document.getElementById('signDate').value;
+
+        var finalPage = `
+            <html>
+            <head>
+                <title>Signature Preview</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 20px;
+                        max-width: 800px;
+                        margin: auto;
+                    }
+                    h1, h2, h3 {
+                        text-align: center;
+                    }
+                    p {
+                        text-align: justify;
+                        margin: 10px 0;
+                    }
+                    .signature-section {
+                        margin-top: 20px;
+                    }
+                    .signature-box {
+                        width: 100%;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>ACUPUNCTURE INFORMED CONSENT TO TREAT</h1>
+                <p>I hereby request and consent to the performance of acupuncture treatments and other procedures within the scope of practice of acupuncture on me (or on the patient named below, for whom I am legally responsible) by the acupuncturist named below and/or other licensed acupuncturists who now or in the future treat me while employed by, working or associated with or serving as back-up for acupuncturists named below, including those working at the clinic or office listed below or any other office or clinic, whether signatories to this form or not.</p>
+                <p>I understand that methods of treatment may include, but are not limited to, acupuncture, moxibustion, cupping, electrical stimulation, Tui-Na (Chinese Massage), Chinese herbal medicine, and nutritional counseling. I understand that the herbs may need to be prepared and the teas consumed according to the instructions provided orally and in writing. The herbs may have an unpleasant smell or taste. I will immediately notify a member of the clinical staff of any unanticipated or unpleasant effects associated with the consumption of the herbs.</p>
+                <p>I have been informed that acupuncture is a generally safe method of treatment, but that it may have some side effects, including bruising, numbness or tingling near the needling sites that may last a few days, and dizziness or fainting. Burns and/or scarring are a potential risk of moxibustion and cupping, or when treatment involves the use of heat lamps. Bruising is a common side effect of cupping. Unusual risks of acupuncture include spontaneous miscarriage, nerve damage and organ puncture, including lung puncture (pneumothorax). Infection is another possible risk, although the clinic uses sterile disposable needles and maintains a clean and safe environment.</p>
+                <p>I understand that while this document describes the major risks of treatment, other side effects and risks may occur. The herbs and nutritional supplements (which are from plant, animal, and mineral sources) that have been recommended are traditionally considered safe in the practice of Chinese medicine, although some may be toxic in large doses. I understand that some herbs may be inappropriate during pregnancy. Some possible side effects of taking herbs are nausea, gas, stomachache, vomiting, headache, diarrhea, rashes, hives, and tingling of the tongue. I will notify a clinical staff member who is caring for me if I am or become pregnant.</p>
+                <p>I do not expect the clinical staff to be able to anticipate and explain all possible risks and complications of treatment, and I wish to rely on the clinical staff to exercise judgment during the course of treatment which the clinical staff thinks at the time, based upon the facts then known is in my best interest. I understand that results are not guaranteed.</p>
+                <p>I understand the clinical and administrative staff may review my patient records and lab reports, but all my records will be kept confidential and will not be released without my written consent.</p>
+                <p>By voluntarily signing below, I show that I have read, or have had read to me, the above consent to treatment, have been told about the risks and benefits of acupuncture and other procedures, and have had an opportunity to ask questions. I intend this consent form to cover the entire course of treatment for my present condition and for any future condition(s) for which I seek treatment.</p>
+                <p>In addition, I hereby consent to the 24 hr. cancellation policy whereby I agree to inform the clinical staff of my intent to cancel and avoid charges applicable for treatment time. Under this policy, I am aware that all appointments not cancelled within the 24 hr. period will incur regular fees.</p>
+                <div class="signature-section">
+                    <label>PATIENT SIGNATURE (${signatureType === 'handwritten' ? 'Handwritten' : 'Typed'})</label>
+                    ${signatureType === 'handwritten' ? '<img src="' + signatureImage + '" alt="Handwritten Signature">' : '<p>' + textSignature + '</p>'}
+                </div>
+                <p>Date: ${signDate}</p>
+                <button onclick="window.print()">Print PDF</button>
+            </body>
+            </html>
+        `;
+
+        var newWindow = window.open('', '_blank');
+        newWindow.document.write(finalPage);
+        newWindow.document.close();
+    }
+
+    document.getElementById('signDate').valueAsDate = new Date();
+</script>
+</body>
+</html>

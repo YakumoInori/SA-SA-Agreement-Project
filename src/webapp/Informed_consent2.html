@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ARBITRATION AGREEMENT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        h1, h2, h3 {
+            text-align: center;
+        }
+        p {
+            text-align: justify;
+            margin: 10px 0;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], input[type="date"] {
+            width: calc(100% - 22px);
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        canvas {
+            border: 1px solid black;
+            touch-action: none; /* 禁止触摸屏的默认行为 */
+        }
+        .signature-section {
+            margin-top: 20px;
+        }
+        button {
+            margin-top: 10px;
+        }
+        .signature-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .signature-box {
+            width: 100%;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+        .button-group button {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+<h1>ARBITRATION AGREEMENT</h1>
+
+<p>Article 1: Agreement to Arbitrate: It is understood that any dispute as to medical malpractice, that is as to whether any medical services rendered under this contract were unnecessary or unauthorized or were improperly, negligently or incompetently rendered, will be determined by submission to arbitration as provided by state and federal law, and not by lawsuit or resort to court process except as state and federal law provides for judicial review of arbitration proceedings. Both parties to this contract, by entering into it, are giving up their constitutional right to have any such dispute decided in a court of law before a jury, and instead are accepting the use of arbitration.</p>
+
+<p>Article 2: All Claims must be Arbitrated: It is also understood that any dispute that does not relate to medical malpractice, including disputes as to whether or not a dispute is subject to arbitration, will also be determined by submission to binding arbitration. It is the intention of the parties that this agreement bind all parties as to all claims, including claims arising out of or relating to treatment or services provided by the health care provider including any heirs or past, present or future spouse(s) of the patient in relation to all claims, including loss of consortium. This agreement is intended to bind any children of the patient whether born or unborn at the time of the occurrence giving rise to any claim. This agreement is intended to bind the patient and the health care provider and/or other licensed health care providers or preceptors and interns who now or in the future treat the patient while employed by, working or associated with or serving as back-up for the health care provider, including those working at the health care provider’s clinic or office or any other office whether signatories to this form or not.</p>
+
+<p>All claims for monetary damages exceeding the jurisdictional limit of the small claims court against the health care provider, and/or health care provider’s associates, association, corporation, partnership, employees, agents and estates must be arbitrated including, without limitation, claims for loss of consortium, wrongful death, emotional distress, injunctive relief, or punitive damages.</p>
+
+<p>Article 3: Procedures and Applicable Law: A demand for arbitration must be communicated in writing to all parties. Each party shall select an arbitrator (party arbitrator) within thirty days and a third arbitrator (neutral arbitrator) shall be selected by the arbitrators appointed by the parties within thirty days thereafter. The neutral arbitrator shall then be the sole arbitrator and shall decide the arbitration. Each party to the arbitration shall pay such party’s pro rata share of the expenses and fees of the neutral arbitrator, together with other expenses of the arbitration incurred or approved by the neutral arbitrator, not including counsel fees, witness fees, or other expenses by a party for such party’s own benefit.</p>
+
+<p>Either party shall have the absolute right to bifurcate the issues of liability and damage upon written request to the neutral arbitrator.</p>
+
+<p>The parties agree that provisions of state and federal law, where applicable, establishing the right to introduce evidence of any amount payable as a benefit to the patient to the maximum extent permitted by law, limiting the right to recover non-economic losses, and limiting the right to recover judgment for future damages conformed to periodic payments, shall apply to disputes within this Arbitration Agreement. The parties further agree that the Commercial Arbitration Rules of the American Arbitration Association shall govern any arbitration conducted pursuant to this Arbitration Agreement.</p>
+
+<p>Article 4: General Provision: All claims based upon the same incident, transaction or related circumstances shall be arbitrated in one proceeding. A claim shall be waived and forever barred if (1) on the date notice thereof is received, the claim, if asserted in a civil action, would be barred by the applicable legal statute of limitations, or (2) the claimant fails to pursue the arbitration claim in accordance with the procedures prescribed herein with the reasonable diligence.</p>
+
+<p>Article 5: Revocation: This agreement may be revoked by written notice delivered to the health care provider within 30 days of signature and if not revoked will govern all professional services received by the patient and all other disputes between the parties.</p>
+
+<p>Article 6: Retroactive Effect: If patient intends this agreement to cover services rendered before the date it is signed (for example, emergency treatment) patient should initial here. ___________ Effective as the date of first professional services.</p>
+
+<p>If any provision of this Arbitration Agreement is held invalid or unenforceable, the remaining provisions shall remain in full force and shall not be affected by the invalidity of any other provision. I understand that I have the right to receive a copy of this Arbitration Agreement. By my signature below, I acknowledge that I have received a copy.</p>
+
+<p>NOTICE: BY SIGNING THIS CONTRACT YOU ARE AGREEING TO HAVE ANY ISSUE OF MEDICAL PRACTICE DECIDED BY NEUTRAL ARBITRATION AND YOU ARE GIVING UP YOUR RIGHT TO A JURY OR COURT TRIAL. SEE ARTICLE 1 OF THIS CONTRACT.</p>
+
+<label for="signatureType">Select Signature Type</label>
+<select id="signatureType" onchange="toggleSignatureType()">
+    <option value="typed">Typed Signature</option>
+    <option value="handwritten">Handwritten Signature</option>
+</select>
+
+<div class="signature-container">
+    <div id="typedSignature" class="signature-box">
+        <label for="typedSignatureInput">PATIENT SIGNATURE (Typed)</label>
+        <input type="text" id="typedSignatureInput" placeholder="Enter signature">
+        <button type="button" onclick="saveTypedSignature()">Save Typed Signature</button>
+    </div>
+    <div id="handwrittenSignature" class="signature-box" style="display: none;">
+        <label for="signatureCanvas">PATIENT SIGNATURE (Handwritten)</label>
+        <canvas id="signatureCanvas" width="500" height="200"></canvas>
+        <button type="button" onclick="clearCanvas()">Clear</button>
+        <button type="button" onclick="saveHandwrittenSignature()">Save Signature</button>
+    </div>
+</div>
+
+<label for="officeSignatureType">Select Office Signature Type</label>
+<select id="officeSignatureType" onchange="toggleOfficeSignatureType()">
+    <option value="typed">Typed Signature</option>
+    <option value="handwritten">Handwritten Signature</option>
+</select>
+
+<div class="signature-container">
+    <div id="officeTypedSignature" class="signature-box">
+        <label for="officeTypedSignatureInput">OFFICE SIGNATURE (Typed)</label>
+        <input type="text" id="officeTypedSignatureInput" placeholder="Enter signature">
+        <button type="button" onclick="saveOfficeTypedSignature()">Save Typed Signature</button>
+    </div>
+    <div id="officeHandwrittenSignature" class="signature-box" style="display: none;">
+        <label for="officeSignatureCanvas">OFFICE SIGNATURE (Handwritten)</label>
+        <canvas id="officeSignatureCanvas" width="500" height="200"></canvas>
+        <button type="button" onclick="clearOfficeCanvas()">Clear</button>
+        <button type="button" onclick="saveOfficeHandwrittenSignature()">Save Signature</button>
+    </div>
+</div>
+
+<label for="signDate">Date</label>
+<input type="date" id="signDate" name="signDate" class="date-input">
+
+<p>(Or Patient Representative) (Indicate relationship if signing for patient)</p>
+
+<div class="button-group">
+    <button type="button" onclick="generateFinalPage()">Finish</button>
+</div>
+
+<script>
+    function toggleSignatureType() {
+        var signatureType = document.getElementById('signatureType').value;
+        if (signatureType === 'typed') {
+            document.getElementById('typedSignature').style.display = 'block';
+            document.getElementById('handwrittenSignature').style.display = 'none';
+        } else {
+            document.getElementById('typedSignature').style.display = 'none';
+            document.getElementById('handwrittenSignature').style.display = 'block';
+        }
+    }
+
+    function toggleOfficeSignatureType() {
+        var officeSignatureType = document.getElementById('officeSignatureType').value;
+        if (officeSignatureType === 'typed') {
+            document.getElementById('officeTypedSignature').style.display = 'block';
+            document.getElementById('officeHandwrittenSignature').style.display = 'none';
+        } else {
+            document.getElementById('officeTypedSignature').style.display = 'none';
+            document.getElementById('officeHandwrittenSignature').style.display = 'block';
+        }
+    }
+
+    var canvas = document.getElementById('signatureCanvas');
+    var ctx = canvas.getContext('2d');
+    var drawing = false;
+
+    canvas.addEventListener('mousedown', function(e) {
+        drawing = true;
+        ctx.beginPath();
+        ctx.moveTo(e.offsetX, e.offsetY);
+    });
+
+    canvas.addEventListener('mousemove', function(e) {
+        if (drawing) {
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+        }
+    });
+
+    canvas.addEventListener('mouseup', function() {
+        drawing = false;
+    });
+
+    canvas.addEventListener('mouseout', function() {
+        drawing = false;
+    });
+
+    canvas.addEventListener('touchstart', function(e) {
+        drawing = true;
+        ctx.beginPath();
+        ctx.moveTo(e.touches[0].clientX - canvas.offsetLeft, e.touches[0].clientY - canvas.offsetTop);
+    });
+
+    canvas.addEventListener('touchmove', function(e) {
+        if (drawing) {
+            ctx.lineTo(e.touches[0].clientX - canvas.offsetLeft, e.touches[0].clientY - canvas.offsetTop);
+            ctx.stroke();
+        }
+    });
+
+    canvas.addEventListener('touchend', function() {
+        drawing = false;
+    });
+
+    function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function saveHandwrittenSignature() {
+        var dataURL = canvas.toDataURL('image/png');
+        localStorage.setItem('signatureImage', dataURL);
+        alert('Handwritten signature saved');
+    }
+
+    function saveTypedSignature() {
+        var textSignature = document.getElementById('typedSignatureInput').value;
+        localStorage.setItem('textSignature', textSignature);
+        alert('Typed signature saved');
+    }
+
+    var officeCanvas = document.getElementById('officeSignatureCanvas');
+    var officeCtx = officeCanvas.getContext('2d');
+    var officeDrawing = false;
+
+    officeCanvas.addEventListener('mousedown', function(e) {
+        officeDrawing = true;
+        officeCtx.beginPath();
+        officeCtx.moveTo(e.offsetX, e.offsetY);
+    });
+
+    officeCanvas.addEventListener('mousemove', function(e) {
+        if (officeDrawing) {
+            officeCtx.lineTo(e.offsetX, e.offsetY);
+            officeCtx.stroke();
+        }
+    });
+
+    officeCanvas.addEventListener('mouseup', function() {
+        officeDrawing = false;
+    });
+
+    officeCanvas.addEventListener('mouseout', function() {
+        officeDrawing = false;
+    });
+
+    officeCanvas.addEventListener('touchstart', function(e) {
+        officeDrawing = true;
+        officeCtx.beginPath();
+        officeCtx.moveTo(e.touches[0].clientX - officeCanvas.offsetLeft, e.touches[0].clientY - officeCanvas.offsetTop);
+    });
+
+    officeCanvas.addEventListener('touchmove', function(e) {
+        if (officeDrawing) {
+            officeCtx.lineTo(e.touches[0].clientX - officeCanvas.offsetLeft, e.touches[0].clientY - officeCanvas.offsetTop);
+            officeCtx.stroke();
+        }
+    });
+
+    officeCanvas.addEventListener('touchend', function() {
+        officeDrawing = false;
+    });
+
+    function clearOfficeCanvas() {
+        officeCtx.clearRect(0, 0, officeCanvas.width, officeCanvas.height);
+    }
+
+    function saveOfficeHandwrittenSignature() {
+        var officeDataURL = officeCanvas.toDataURL('image/png');
+        localStorage.setItem('officeSignatureImage', officeDataURL);
+        alert('Office Handwritten signature saved');
+    }
+
+    function saveOfficeTypedSignature() {
+        var officeTextSignature = document.getElementById('officeTypedSignatureInput').value;
+        localStorage.setItem('officeTextSignature', officeTextSignature);
+        alert('Office Typed signature saved');
+    }
+
+    function generateFinalPage() {
+        var signatureType = document.getElementById('signatureType').value;
+        var officeSignatureType = document.getElementById('officeSignatureType').value;
+        var signatureImage = localStorage.getItem('signatureImage');
+        var textSignature = localStorage.getItem('textSignature');
+        var officeSignatureImage = localStorage.getItem('officeSignatureImage');
+        var officeTextSignature = localStorage.getItem('officeTextSignature');
+        var signDate = document.getElementById('signDate').value;
+
+        var finalPage = `
+            <html>
+            <head>
+                <title>Signature Preview</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 20px;
+                        max-width: 800px;
+                        margin: auto;
+                    }
+                    h1, h2, h3 {
+                        text-align: center;
+                    }
+                    p {
+                        text-align: justify;
+                        margin: 10px 0;
+                    }
+                    .signature-section {
+                        margin-top: 20px;
+                    }
+                    .signature-box {
+                        width: 100%;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>ARBITRATION AGREEMENT</h1>
+                <p>Article 1: Agreement to Arbitrate: It is understood that any dispute as to medical malpractice, that is as to whether any medical services rendered under this contract were unnecessary or unauthorized or were improperly, negligently or incompetently rendered, will be determined by submission to arbitration as provided by state and federal law, and not by lawsuit or resort to court process except as state and federal law provides for judicial review of arbitration proceedings. Both parties to this contract, by entering into it, are giving up their constitutional right to have any such dispute decided in a court of law before a jury, and instead are accepting the use of arbitration.</p>
+                <p>Article 2: All Claims must be Arbitrated: It is also understood that any dispute that does not relate to medical malpractice, including disputes as to whether or not a dispute is subject to arbitration, will also be determined by submission to binding arbitration. It is the intention of the parties that this agreement bind all parties as to all claims, including claims arising out of or relating to treatment or services provided by the health care provider including any heirs or past, present or future spouse(s) of the patient in relation to all claims, including loss of consortium. This agreement is intended to bind any children of the patient whether born or unborn at the time of the occurrence giving rise to any claim. This agreement is intended to bind the patient and the health care provider and/or other licensed health care providers or preceptors and interns who now or in the future treat the patient while employed by, working or associated with or serving as back-up for the health care provider, including those working at the health care provider’s clinic or office or any other office whether signatories to this form or not.</p>
+                <p>All claims for monetary damages exceeding the jurisdictional limit of the small claims court against the health care provider, and/or health care provider’s associates, association, corporation, partnership, employees, agents and estates must be arbitrated including, without limitation, claims for loss of consortium, wrongful death, emotional distress, injunctive relief, or punitive damages.</p>
+                <p>Article 3: Procedures and Applicable Law: A demand for arbitration must be communicated in writing to all parties. Each party shall select an arbitrator (party arbitrator) within thirty days and a third arbitrator (neutral arbitrator) shall be selected by the arbitrators appointed by the parties within thirty days thereafter. The neutral arbitrator shall then be the sole arbitrator and shall decide the arbitration. Each party to the arbitration shall pay such party’s pro rata share of the expenses and fees of the neutral arbitrator, together with other expenses of the arbitration incurred or approved by the neutral arbitrator, not including counsel fees, witness fees, or other expenses by a party for such party’s own benefit.</p>
+                <p>Either party shall have the absolute right to bifurcate the issues of liability and damage upon written request to the neutral arbitrator.</p>
+                <p>The parties agree that provisions of state and federal law, where applicable, establishing the right to introduce evidence of any amount payable as a benefit to the patient to the maximum extent permitted by law, limiting the right to recover non-economic losses, and limiting the right to recover judgment for future damages conformed to periodic payments, shall apply to disputes within this Arbitration Agreement. The parties further agree that the Commercial Arbitration Rules of the American Arbitration Association shall govern any arbitration conducted pursuant to this Arbitration Agreement.</p>
+                <p>Article 4: General Provision: All claims based upon the same incident, transaction or related circumstances shall be arbitrated in one proceeding. A claim shall be waived and forever barred if (1) on the date notice thereof is received, the claim, if asserted in a civil action, would be barred by the applicable legal statute of limitations, or (2) the claimant fails to pursue the arbitration claim in accordance with the procedures prescribed herein with the reasonable diligence.</p>
+                <p>Article 5: Revocation: This agreement may be revoked by written notice delivered to the health care provider within 30 days of signature and if not revoked will govern all professional services received by the patient and all other disputes between the parties.</p>
+                <p>Article 6: Retroactive Effect: If patient intends this agreement to cover services rendered before the date it is signed (for example, emergency treatment) patient should initial here. ___________ Effective as the date of first professional services.</p>
+                <p>If any provision of this Arbitration Agreement is held invalid or unenforceable, the remaining provisions shall remain in full force and shall not be affected by the invalidity of any other provision. I understand that I have the right to receive a copy of this Arbitration Agreement. By my signature below, I acknowledge that I have received a copy.</p>
+                <p>NOTICE: BY SIGNING THIS CONTRACT YOU ARE AGREEING TO HAVE ANY ISSUE OF MEDICAL PRACTICE DECIDED BY NEUTRAL ARBITRATION AND YOU ARE GIVING UP YOUR RIGHT TO A JURY OR COURT TRIAL. SEE ARTICLE 1 OF THIS CONTRACT.</p>
+                <div class="signature-section">
+                    <label>PATIENT SIGNATURE (${signatureType === 'handwritten' ? 'Handwritten' : 'Typed'})</label>
+                    ${signatureType === 'handwritten' ? '<img src="' + signatureImage + '" alt="Handwritten Signature">' : '<p>' + textSignature + '</p>'}
+                </div>
+                <div class="signature-section">
+                    <label>OFFICE SIGNATURE (${officeSignatureType === 'handwritten' ? 'Handwritten' : 'Typed'})</label>
+                    ${officeSignatureType === 'handwritten' ? '<img src="' + officeSignatureImage + '" alt="Office Handwritten Signature">' : '<p>' + officeTextSignature + '</p>'}
+                </div>
+                <p>Date: ${signDate}</p>
+                <button onclick="window.print()">Print PDF</button>
+            </body>
+            </html>
+        `;
+
+        var newWindow = window.open('', '_blank');
+        newWindow.document.write(finalPage);
+        newWindow.document.close();
+    }
+
+    document.getElementById('signDate').valueAsDate = new Date();
+</script>
+</body>
+</html>

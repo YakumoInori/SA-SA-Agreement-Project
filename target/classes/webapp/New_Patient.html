@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Patient Intake Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        h1, h2, h3 {
+            text-align: center;
+        }
+        p {
+            text-align: justify;
+            margin: 10px 0;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], input[type="date"], input[type="number"], select {
+            width: calc(100% - 22px);
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        canvas {
+            border: 1px solid black;
+            touch-action: none;
+        }
+        .signature-section {
+            margin-top: 20px;
+        }
+        button {
+            margin-top: 10px;
+        }
+        .signature-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .signature-box {
+            width: 100%;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+        .button-group button {
+            width: 48%;
+        }
+        .preview-question {
+            color: black;
+        }
+        .preview-answer {
+            color: deepskyblue;
+        }
+    </style>
+</head>
+<body>
+<h1>New Patient Intake Form</h1>
+
+<form id="intakeForm">
+    <label for="temperature">Temperature:</label>
+    <input type="text" id="temperature" name="temperature">
+
+    <label>Title:</label>
+    <input type="checkbox" name="title" value="Dr."> Dr.
+    <input type="checkbox" name="title" value="Mr."> Mr.
+    <input type="checkbox" name="title" value="Mrs."> Mrs.
+    <input type="checkbox" name="title" value="Ms."> Ms.
+    <input type="checkbox" name="title" value="Miss"> Miss
+
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName">
+
+    <label for="hasMiddleName">Middle Initial:</label>
+    <input type="checkbox" id="hasMiddleName" name="hasMiddleName" value="Yes" onclick="toggleMiddleNameField()"> Yes
+    <input type="text" id="middleInitial" name="middleInitial" style="display:none;">
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" name="lastName">
+
+    <label for="dob">Date of Birth:</label>
+    <input type="date" id="dob" name="dob">
+
+    <label>Gender:</label>
+    <input type="radio" id="genderMale" name="gender" value="Male"> Male
+    <input type="radio" id="genderFemale" name="gender" value="Female"> Female
+
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address">
+
+    <label for="city">City:</label>
+    <input type="text" id="city" name="city">
+
+    <label for="state">State:</label>
+    <input type="text" id="state" name="state">
+
+    <label for="zipCode">Zip Code:</label>
+    <input type="text" id="zipCode" name="zipCode">
+
+    <label for="homePhone">Home Phone:</label>
+    <input type="text" id="homePhone" name="homePhone">
+
+    <label for="cellPhone">Cell Phone:</label>
+    <input type="text" id="cellPhone" name="cellPhone">
+
+    <label for="email">Email:</label>
+    <input type="text" id="email" name="email">
+
+    <label for="emergencyContact">Emergency Contact:</label>
+    <input type="text" id="emergencyContact" name="emergencyContact">
+
+    <label for="relationship">Relationship:</label>
+    <input type="text" id="relationship" name="relationship">
+
+    <label for="emergencyPhone">Phone:</label>
+    <input type="text" id="emergencyPhone" name="emergencyPhone">
+
+    <label for="chiefComplaint">Chief Complaint:</label>
+    <input type="text" id="chiefComplaint" name="chiefComplaint">
+
+    <label for="familyHistory">Family History:</label>
+    <div id="familyHistory">
+        <input type="checkbox" id="diabetes" name="familyHistory" value="Diabetes"> Diabetes
+        <input type="checkbox" id="heartDisease" name="familyHistory" value="Heart Disease"> Heart Disease
+        <input type="checkbox" id="highCholesterol" name="familyHistory" value="High Cholesterol"> High Cholesterol
+        <input type="checkbox" id="hypertension" name="familyHistory" value="Hypertension"> Hypertension
+        <input type="checkbox" id="osteoporosis" name="familyHistory" value="Osteoporosis"> Osteoporosis
+        <input type="checkbox" id="cancer" name="familyHistory" value="Cancer"> Cancer
+        <input type="checkbox" id="psychologicalDisorders" name="familyHistory" value="Psychological Disorders"> Psychological Disorders
+        <input type="checkbox" id="noKnownConditions" name="familyHistory" value="No known conditions"> No known conditions
+    </div>
+
+    <label for="pastMedicalHistory">Past Medical History:</label>
+    <div id="pastMedicalHistory">
+        <input type="checkbox" id="hivAids" name="pastMedicalHistory" value="HIV/AIDS"> HIV/AIDS
+        <input type="checkbox" id="diabetesPast" name="pastMedicalHistory" value="Diabetes"> Diabetes
+        <input type="checkbox" id="surgery" name="pastMedicalHistory" value="Surgery"> Surgery
+        <input type="checkbox" id="allergies" name="pastMedicalHistory" value="Allergies"> Allergies
+        <input type="checkbox" id="thyroidDisorders" name="pastMedicalHistory" value="Thyroid disorders"> Thyroid disorders
+        <input type="checkbox" id="asthma" name="pastMedicalHistory" value="Asthma"> Asthma
+        <input type="checkbox" id="heartDiseasePast" name="pastMedicalHistory" value="Heart disease"> Heart disease
+        <input type="checkbox" id="hepatitis" name="pastMedicalHistory" value="Hepatitis"> Hepatitis
+        <input type="checkbox" id="cancerPast" name="pastMedicalHistory" value="Cancer"> Cancer
+        <input type="checkbox" id="highBloodPressurePast" name="pastMedicalHistory" value="High blood pressure"> High blood pressure
+    </div>
+
+    <label for="lifestyle">Your Lifestyle:</label>
+    <div id="lifestyle">
+        <input type="checkbox" id="alcohol" name="lifestyle" value="Alcohol"> Alcohol
+        <input type="checkbox" id="tobacco" name="lifestyle" value="Tobacco"> Tobacco
+        <input type="checkbox" id="marijuana" name="lifestyle" value="Marijuana"> Marijuana
+        <input type="checkbox" id="drugs" name="lifestyle" value="Drugs"> Drugs
+        <input type="checkbox" id="stress" name="lifestyle" value="Stress"> Stress
+    </div>
+
+    <label for="generalSymptoms">General Symptoms:</label>
+    <div id="generalSymptoms">
+        <input type="checkbox" id="heavyAppetite" name="generalSymptoms" value="Heavy appetite"> Heavy appetite
+        <input type="checkbox" id="poorSleep" name="generalSymptoms" value="Poor sleep"> Poor sleep
+        <input type="checkbox" id="fatigue" name="generalSymptoms" value="Fatigue"> Fatigue
+        <input type="checkbox" id="coldHandsFeet" name="generalSymptoms" value="Cold hands or feet"> Cold hands or feet
+        <input type="checkbox" id="shortnessOfBreath" name="generalSymptoms" value="Shortness of breath"> Shortness of breath
+        <input type="checkbox" id="fever" name="generalSymptoms" value="Fever"> Fever
+        <input type="checkbox" id="nightSweats" name="generalSymptoms" value="Night sweats"> Night sweats
+        <input type="checkbox" id="vertigoDizziness" name="generalSymptoms" value="Vertigo or dizziness"> Vertigo or dizziness
+    </div>
+
+    <label for="headEyesEarsNoseThroat">Head, Eyes, Ears, Nose, Throat:</label>
+    <div id="headEyesEarsNoseThroat">
+        <input type="checkbox" id="glasses" name="headEyesEarsNoseThroat" value="Glasses"> Glasses
+        <input type="checkbox" id="grindingTeeth" name="headEyesEarsNoseThroat" value="Grinding teeth"> Grinding teeth
+        <input type="checkbox" id="tmj" name="headEyesEarsNoseThroat" value="TMJ"> TMJ
+        <input type="checkbox" id="blurredVision" name="headEyesEarsNoseThroat" value="Blurred vision"> Blurred vision
+        <input type="checkbox" id="dryMouth" name="headEyesEarsNoseThroat" value="Dry mouth"> Dry mouth
+    </div>
+
+    <label for="respiratory">Respiratory:</label>
+    <div id="respiratory">
+        <input type="checkbox" id="shortnessOfBreathRespiratory" name="respiratory" value="Shortness of breath"> Shortness of breath
+        <input type="checkbox" id="asthmaWheezing" name="respiratory" value="Asthma/Wheezing"> Asthma/Wheezing
+        <input type="checkbox" id="cough" name="respiratory" value="Cough"> Cough
+    </div>
+
+    <label for="cardiovascular">Cardiovascular:</label>
+    <div id="cardiovascular">
+        <input type="checkbox" id="highBloodPressure" name="cardiovascular" value="High blood pressure"> High blood pressure
+        <input type="checkbox" id="fainting" name="cardiovascular" value="Fainting"> Fainting
+        <input type="checkbox" id="chestPain" name="cardiovascular" value="Chest pain"> Chest pain
+        <input type="checkbox" id="heartPalpitations" name="cardiovascular" value="Heart palpitations"> Heart palpitations
+    </div>
+
+    <label for="gastrointestinal">Gastrointestinal:</label>
+    <div id="gastrointestinal">
+        <input type="checkbox" id="nausea" name="gastrointestinal" value="Nausea"> Nausea
+        <input type="checkbox" id="acidRegurgitation" name="gastrointestinal" value="Acid regurgitation"> Acid regurgitation
+        <input type="checkbox" id="gas" name="gastrointestinal" value="Gas"> Gas
+        <input type="checkbox" id="bloating" name="gastrointestinal" value="Bloating"> Bloating
+        <input type="checkbox" id="diarrhea" name="gastrointestinal" value="Diarrhea"> Diarrhea
+        <input type="checkbox" id="constipation" name="gastrointestinal" value="Constipation"> Constipation
+    </div>
+
+    <label for="musculoskeletal">Musculoskeletal:</label>
+    <div id="musculoskeletal">
+        <input type="checkbox" id="neckShoulderPain" name="musculoskeletal" value="Neck/shoulder pain"> Neck/shoulder pain
+        <input type="checkbox" id="musclePain" name="musculoskeletal" value="Muscle pain"> Muscle pain
+        <input type="checkbox" id="upperBackPain" name="musculoskeletal" value="Upper back pain"> Upper back pain
+        <input type="checkbox" id="lowerBackPain" name="musculoskeletal" value="Lower back pain"> Lower back pain
+        <input type="checkbox" id="jointPain" name="musculoskeletal" value="Joint pain"> Joint pain
+    </div>
+
+    <label for="skinAndHair">Skin and Hair:</label>
+    <div id="skinAndHair">
+        <input type="checkbox" id="rashes" name="skinAndHair" value="Rashes"> Rashes
+        <input type="checkbox" id="eczema" name="skinAndHair" value="Eczema"> Eczema
+        <input type="checkbox" id="psoriasis" name="skinAndHair" value="Psoriasis"> Psoriasis
+        <input type="checkbox" id="acne" name="skinAndHair" value="Acne"> Acne
+    </div>
+
+    <label for="neuropsychological">Neuropsychological:</label>
+    <div id="neuropsychological">
+        <input type="checkbox" id="poorMemory" name="neuropsychological" value="Poor memory"> Poor memory
+        <input type="checkbox" id="depression" name="neuropsychological" value="Depression"> Depression
+        <input type="checkbox" id="anxiety" name="neuropsychological" value="Anxiety"> Anxiety
+        <input type="checkbox" id="irritability" name="neuropsychological" value="Irritability"> Irritability
+    </div>
+
+    <label for="genitourinary">Genitourinary:</label>
+    <div id="genitourinary">
+        <input type="checkbox" id="painOnUrination" name="genitourinary" value="Pain on urination"> Pain on urination
+        <input type="checkbox" id="frequentUrination" name="genitourinary" value="Frequent urination"> Frequent urination
+        <input type="checkbox" id="urgentUrination" name="genitourinary" value="Urgent urination"> Urgent urination
+        <input type="checkbox" id="unableToHoldUrine" name="genitourinary" value="Unable to hold urine"> Unable to hold urine
+    </div>
+
+    <label for="gynecology">Gynecology:</label>
+    <div id="gynecology">
+        <input type="checkbox" id="irregularPeriods" name="gynecology" value="Irregular periods"> Irregular periods
+        <input type="checkbox" id="painfulPeriods" name="gynecology" value="Painful periods"> Painful periods
+        <input type="checkbox" id="pms" name="gynecology" value="PMS"> PMS
+        <input type="checkbox" id="vaginalDischarge" name="gynecology" value="Vaginal discharge">(color)
+    </div>
+
+    <label for="currentComplaints">Current Complaints:</label>
+    <textarea id="currentComplaints" name="currentComplaints" rows="4" cols="50" placeholder="Please mark where your pain/symptoms are:"></textarea>
+
+    <label for="painScale">Please grade your pain on a scale of 0-10 (0= No Pain, 10= Extreme Pain):</label>
+    <div id="painScale">
+        <label for="neckPain">Neck:</label>
+        <input type="number" id="neckPain" name="painScale" min="0" max="10" step="1">
+        <label for="upperBackPainScale">Upper Back:</label>
+        <input type="number" id="upperBackPainScale" name="painScale" min="0" max="10" step="1">
+        <label for="midBackPain">Mid Back:</label>
+        <input type="number" id="midBackPain" name="painScale" min="0" max="10" step="1">
+        <label for="lowerBackPainScale">Lower Back:</label>
+        <input type="number" id="lowerBackPainScale" name="painScale" min="0" max="10" step="1">
+    </div>
+
+    <label for="painFrequency">Choose how frequent the pain is present:</label>
+    <div id="painFrequency">
+        <input type="radio" id="seldom" name="painFrequency" value="Seldom"> Seldom
+        <input type="radio" id="intermittent" name="painFrequency" value="Intermittent"> Intermittent
+        <input type="radio" id="frequent" name="painFrequency" value="Frequent"> Frequent
+        <input type="radio" id="constant" name="painFrequency" value="Constant"> Constant
+    </div>
+
+    <label for="painDescription">Check which ones describe your pain:</label>
+    <div id="painDescription">
+        <input type="checkbox" id="dullPain" name="painDescription" value="Dull"> Dull
+        <input type="checkbox" id="sharpPain" name="painDescription" value="Sharp"> Sharp
+        <input type="checkbox" id="throbbingPain" name="painDescription" value="Throbbing"> Throbbing
+        <input type="checkbox" id="burningPain" name="painDescription" value="Burning"> Burning
+        <input type="checkbox" id="deepPain" name="painDescription" value="Deep"> Deep
+        <input type="checkbox" id="achingPain" name="painDescription" value="Aching"> Aching
+        <input type="checkbox" id="tinglingPain" name="painDescription" value="Tingling"> Tingling
+        <input type="checkbox" id="stabbingPain" name="painDescription" value="Stabbing"> Stabbing
+        <input type="checkbox" id="crampingPain" name="painDescription" value="Cramping"> Cramping
+        <input type="checkbox" id="numbnessPain" name="painDescription" value="Numbness"> Numbness
+        <input type="checkbox" id="radiatingPain" name="painDescription" value="Radiating"> Radiating
+        <input type="checkbox" id="stiffnessPain" name="painDescription" value="Stiffness"> Stiffness
+    </div>
+
+    <label for="otherSymptoms">Other symptoms:</label>
+    <textarea id="otherSymptoms" name="otherSymptoms" rows="4" cols="50"></textarea>
+
+    <p>The above information is true to the best of my knowledge. I authorize my insurance benefits to be paid directly to Artemedica. I understand that I am financially responsible for my health insurance deductible and/or coinsurance. I understand if my insurance company denies coverage and/or payment for services provided to me, I assume financial responsibility. I also authorize Artemedica and/or my insurance company to release any information required to process my claims. I understand that if I am uninsured, I agree to pay for the medical services rendered to me at the time of service.</p>
+
+    <p>(All questions contained in this questionnaire are strictly confidential and will become part of your medical record.)</p>
+
+    <div class="signature-container">
+        <label for="patientSignatureType">Select Signature Type</label>
+        <select id="patientSignatureType" onchange="togglePatientSignatureType()">
+            <option value="typed">Typed Signature</option>
+            <option value="handwritten">Handwritten Signature</option>
+        </select>
+
+        <div id="typedPatientSignature" class="signature-box">
+            <label for="typedPatientSignatureInput">Patient Signature (Typed)</label>
+            <input type="text" id="typedPatientSignatureInput" placeholder="Enter signature">
+            <button type="button" onclick="saveTypedPatientSignature()">Save Typed Signature</button>
+        </div>
+        <div id="handwrittenPatientSignature" class="signature-box" style="display: none;">
+            <label for="patientSignatureCanvas">Patient Signature (Handwritten)</label>
+            <canvas id="patientSignatureCanvas" width="500" height="200"></canvas>
+            <button type="button" onclick="clearPatientCanvas()">Clear</button>
+            <button type="button" onclick="saveHandwrittenPatientSignature()">Save Signature</button>
+        </div>
+    </div>
+
+    <div class="signature-container">
+        <label for="officeSignatureType">Select Office Signature Type</label>
+        <select id="officeSignatureType" onchange="toggleOfficeSignatureType()">
+            <option value="typed">Typed Signature</option>
+            <option value="handwritten">Handwritten Signature</option>
+        </select>
+
+        <div id="typedOfficeSignature" class="signature-box">
+            <label for="typedOfficeSignatureInput">Office Signature (Typed)</label>
+            <input type="text" id="typedOfficeSignatureInput" placeholder="Enter signature">
+            <button type="button" onclick="saveTypedOfficeSignature()">Save Typed Signature</button>
+        </div>
+        <div id="handwrittenOfficeSignature" class="signature-box" style="display: none;">
+            <label for="officeSignatureCanvas">Office Signature (Handwritten)</label>
+            <canvas id="officeSignatureCanvas" width="500" height="200"></canvas>
+            <button type="button" onclick="clearOfficeCanvas()">Clear</button>
+            <button type="button" onclick="saveHandwrittenOfficeSignature()">Save Signature</button>
+        </div>
+    </div>
+
+    <label for="signDate">Date</label>
+    <input type="date" id="signDate" name="signDate" class="date-input">
+
+    <div class="button-group">
+        <button type="button" onclick="generateFinalPage()">Finish</button>
+    </div>
+</form>
+
+<script>
+    function toggleMiddleNameField() {
+        var hasMiddleName = document.getElementById('hasMiddleName').checked;
+        document.getElementById('middleInitial').style.display = hasMiddleName ? 'block' : 'none';
+    }
+
+    function togglePatientSignatureType() {
+        var signatureType = document.getElementById('patientSignatureType').value;
+        if (signatureType === 'typed') {
+            document.getElementById('typedPatientSignature').style.display = 'block';
+            document.getElementById('handwrittenPatientSignature').style.display = 'none';
+        } else {
+            document.getElementById('typedPatientSignature').style.display = 'none';
+            document.getElementById('handwrittenPatientSignature').style.display = 'block';
+        }
+    }
+
+    function toggleOfficeSignatureType() {
+        var signatureType = document.getElementById('officeSignatureType').value;
+        if (signatureType === 'typed') {
+            document.getElementById('typedOfficeSignature').style.display = 'block';
+            document.getElementById('handwrittenOfficeSignature').style.display = 'none';
+        } else {
+            document.getElementById('typedOfficeSignature').style.display = 'none';
+            document.getElementById('handwrittenOfficeSignature').style.display = 'block';
+        }
+    }
+
+    var patientCanvas = document.getElementById('patientSignatureCanvas');
+    var patientCtx = patientCanvas.getContext('2d');
+    var patientDrawing = false;
+
+    patientCanvas.addEventListener('mousedown', function(e) {
+        patientDrawing = true;
+        patientCtx.beginPath();
+        patientCtx.moveTo(e.offsetX, e.offsetY);
+    });
+
+    patientCanvas.addEventListener('mousemove', function(e) {
+        if (patientDrawing) {
+            patientCtx.lineTo(e.offsetX, e.offsetY);
+            patientCtx.stroke();
+        }
+    });
+
+    patientCanvas.addEventListener('mouseup', function() {
+        patientDrawing = false;
+    });
+
+    patientCanvas.addEventListener('mouseout', function() {
+        patientDrawing = false;
+    });
+
+    patientCanvas.addEventListener('touchstart', function(e) {
+        patientDrawing = true;
+        patientCtx.beginPath();
+        patientCtx.moveTo(e.touches[0].clientX - patientCanvas.offsetLeft, e.touches[0].clientY - patientCanvas.offsetTop);
+    });
+
+    patientCanvas.addEventListener('touchmove', function(e) {
+        if (patientDrawing) {
+            patientCtx.lineTo(e.touches[0].clientX - patientCanvas.offsetLeft, e.touches[0].clientY - patientCanvas.offsetTop);
+            patientCtx.stroke();
+        }
+    });
+
+    patientCanvas.addEventListener('touchend', function() {
+        patientDrawing = false;
+    });
+
+    function clearPatientCanvas() {
+        patientCtx.clearRect(0, 0, patientCanvas.width, patientCanvas.height);
+    }
+
+    function saveHandwrittenPatientSignature() {
+        var dataURL = patientCanvas.toDataURL('image/png');
+        localStorage.setItem('patientSignatureImage', dataURL);
+        alert('Handwritten patient signature saved');
+    }
+
+    function saveTypedPatientSignature() {
+        var textSignature = document.getElementById('typedPatientSignatureInput').value;
+        localStorage.setItem('patientTextSignature', textSignature);
+        alert('Typed patient signature saved');
+    }
+
+    var officeCanvas = document.getElementById('officeSignatureCanvas');
+    var officeCtx = officeCanvas.getContext('2d');
+    var officeDrawing = false;
+
+    officeCanvas.addEventListener('mousedown', function(e) {
+        officeDrawing = true;
+        officeCtx.beginPath();
+        officeCtx.moveTo(e.offsetX, e.offsetY);
+    });
+
+    officeCanvas.addEventListener('mousemove', function(e) {
+        if (officeDrawing) {
+            officeCtx.lineTo(e.offsetX, e.offsetY);
+            officeCtx.stroke();
+        }
+    });
+
+    officeCanvas.addEventListener('mouseup', function() {
+        officeDrawing = false;
+    });
+
+    officeCanvas.addEventListener('mouseout', function() {
+        officeDrawing = false;
+    });
+
+    officeCanvas.addEventListener('touchstart', function(e) {
+        officeDrawing = true;
+        officeCtx.beginPath();
+        officeCtx.moveTo(e.touches[0].clientX - officeCanvas.offsetLeft, e.touches[0].clientY - officeCanvas.offsetTop);
+    });
+
+    officeCanvas.addEventListener('touchmove', function(e) {
+        if (officeDrawing) {
+            officeCtx.lineTo(e.touches[0].clientX - officeCanvas.offsetLeft, e.touches[0].clientY - officeCanvas.offsetTop);
+            officeCtx.stroke();
+        }
+    });
+
+    officeCanvas.addEventListener('touchend', function() {
+        officeDrawing = false;
+    });
+
+    function clearOfficeCanvas() {
+        officeCtx.clearRect(0, 0, officeCanvas.width, officeCanvas.height);
+    }
+
+    function saveHandwrittenOfficeSignature() {
+        var dataURL = officeCanvas.toDataURL('image/png');
+        localStorage.setItem('officeSignatureImage', dataURL);
+        alert('Handwritten office signature saved');
+    }
+
+    function saveTypedOfficeSignature() {
+        var textSignature = document.getElementById('typedOfficeSignatureInput').value;
+        localStorage.setItem('officeTextSignature', textSignature);
+        alert('Typed office signature saved');
+    }
+
+    function generateFinalPage() {
+        var signatureType = document.getElementById('patientSignatureType').value;
+        var patientSignatureImage = localStorage.getItem('patientSignatureImage');
+        var patientTextSignature = localStorage.getItem('patientTextSignature');
+        var officeSignatureType = document.getElementById('officeSignatureType').value;
+        var officeSignatureImage = localStorage.getItem('officeSignatureImage');
+        var officeTextSignature = localStorage.getItem('officeTextSignature');
+        var signDate = document.getElementById('signDate').value;
+
+        var getFieldValue = (fieldId) => document.getElementById(fieldId).value || "N/A";
+        var getCheckedValues = (name) => [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(e => e.value).join(', ') || "N/A";
+
+        var finalPage = `
+            <html>
+            <head>
+                <title>Form Preview</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 20px;
+                        max-width: 800px;
+                        margin: auto;
+                    }
+                    h1, h2, h3 {
+                        text-align: center;
+                    }
+                    p {
+                        text-align: justify;
+                        margin: 10px 0;
+                    }
+                    .preview-question {
+                        color: black;
+                    }
+                    .preview-answer {
+                        color: deepskyblue;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>New Patient Intake Form</h1>
+                <p><span class="preview-question">Temperature:</span> <span class="preview-answer">${getFieldValue('temperature')}</span></p>
+                <p><span class="preview-question">Title:</span> <span class="preview-answer">${getCheckedValues('title')}</span></p>
+                <p><span class="preview-question">First Name:</span> <span class="preview-answer">${getFieldValue('firstName')}</span></p>
+                ${document.getElementById('hasMiddleName').checked ? `<p><span class="preview-question">Middle Initial:</span> <span class="preview-answer">${getFieldValue('middleInitial')}</span></p>` : ''}
+                <p><span class="preview-question">Last Name:</span> <span class="preview-answer">${getFieldValue('lastName')}</span></p>
+                <p><span class="preview-question">Date of Birth:</span> <span class="preview-answer">${getFieldValue('dob')}</span></p>
+                <p><span class="preview-question">Gender:</span> <span class="preview-answer">${getCheckedValues('gender')}</span></p>
+                <p><span class="preview-question">Address:</span> <span class="preview-answer">${getFieldValue('address')}</span></p>
+                <p><span class="preview-question">City:</span> <span class="preview-answer">${getFieldValue('city')}</span></p>
+                <p><span class="preview-question">State:</span> <span class="preview-answer">${getFieldValue('state')}</span></p>
+                <p><span class="preview-question">Zip Code:</span> <span class="preview-answer">${getFieldValue('zipCode')}</span></p>
+                <p><span class="preview-question">Home Phone:</span> <span class="preview-answer">${getFieldValue('homePhone')}</span></p>
+                <p><span class="preview-question">Cell Phone:</span> <span class="preview-answer">${getFieldValue('cellPhone')}</span></p>
+                <p><span class="preview-question">Email:</span> <span class="preview-answer">${getFieldValue('email')}</span></p>
+                <p><span class="preview-question">Emergency Contact:</span> <span class="preview-answer">${getFieldValue('emergencyContact')}</span></p>
+                <p><span class="preview-question">Relationship:</span> <span class="preview-answer">${getFieldValue('relationship')}</span></p>
+                <p><span class="preview-question">Emergency Phone:</span> <span class="preview-answer">${getFieldValue('emergencyPhone')}</span></p>
+                <p><span class="preview-question">Chief Complaint:</span> <span class="preview-answer">${getFieldValue('chiefComplaint')}</span></p>
+                <p><span class="preview-question">Family History:</span> <span class="preview-answer">${getCheckedValues('familyHistory')}</span></p>
+                <p><span class="preview-question">Past Medical History:</span> <span class="preview-answer">${getCheckedValues('pastMedicalHistory')}</span></p>
+                <p><span class="preview-question">Your Lifestyle:</span> <span class="preview-answer">${getCheckedValues('lifestyle')}</span></p>
+                <p><span class="preview-question">General Symptoms:</span> <span class="preview-answer">${getCheckedValues('generalSymptoms')}</span></p>
+                <p><span class="preview-question">Head, Eyes, Ears, Nose, Throat:</span> <span class="preview-answer">${getCheckedValues('headEyesEarsNoseThroat')}</span></p>
+                <p><span class="preview-question">Respiratory:</span> <span class="preview-answer">${getCheckedValues('respiratory')}</span></p>
+                <p><span class="preview-question">Cardiovascular:</span> <span class="preview-answer">${getCheckedValues('cardiovascular')}</span></p>
+                <p><span class="preview-question">Gastrointestinal:</span> <span class="preview-answer">${getCheckedValues('gastrointestinal')}</span></p>
+                <p><span class="preview-question">Musculoskeletal:</span> <span class="preview-answer">${getCheckedValues('musculoskeletal')}</span></p>
+                <p><span class="preview-question">Skin and Hair:</span> <span class="preview-answer">${getCheckedValues('skinAndHair')}</span></p>
+                <p><span class="preview-question">Neuropsychological:</span> <span class="preview-answer">${getCheckedValues('neuropsychological')}</span></p>
+                <p><span class="preview-question">Genitourinary:</span> <span class="preview-answer">${getCheckedValues('genitourinary')}</span></p>
+                <p><span class="preview-question">Gynecology:</span> <span class="preview-answer">${getCheckedValues('gynecology')}</span></p>
+                <p><span class="preview-question">Current Complaints:</span> <span class="preview-answer">${getFieldValue('currentComplaints')}</span></p>
+                <p><span class="preview-question">Pain Scale:</span> <span class="preview-answer">Neck - ${getFieldValue('neckPain')}, Upper Back - ${getFieldValue('upperBackPainScale')}, Mid Back - ${getFieldValue('midBackPain')}, Lower Back - ${getFieldValue('lowerBackPainScale')}</span></p>
+                <p><span class="preview-question">Pain Frequency:</span> <span class="preview-answer">${getCheckedValues('painFrequency')}</span></p>
+                <p><span class="preview-question">Pain Description:</span> <span class="preview-answer">${getCheckedValues('painDescription')}</span></p>
+                <p><span class="preview-question">Other Symptoms:</span> <span class="preview-answer">${getFieldValue('otherSymptoms')}</span></p>
+                <p class="preview-question">The above information is true to the best of my knowledge. I authorize my insurance benefits to be paid directly to Artemedica. I understand that I am financially responsible for my health insurance deductible and/or coinsurance. I understand if my insurance company denies coverage and/or payment for services provided to me, I assume financial responsibility. I also authorize Artemedica and/or my insurance company to release any information required to process my claims. I understand that if I am uninsured, I agree to pay for the medical services rendered to me at the time of service.</p>
+                <p class="preview-question">(All questions contained in this questionnaire are strictly confidential and will become part of your medical record.)</p>
+                <div class="signature-section">
+                    <label class="preview-question">Patient Signature (${signatureType === 'handwritten' ? 'Handwritten' : 'Typed'}):</label>
+                    ${signatureType === 'handwritten' ? '<img src="' + patientSignatureImage + '" alt="Handwritten Signature">' : '<p class="preview-answer">' + patientTextSignature + '</p>'}
+                </div>
+                <div class="signature-section">
+                    <label class="preview-question">Office Signature (${officeSignatureType === 'handwritten' ? 'Handwritten' : 'Typed'}):</label>
+                    ${officeSignatureType === 'handwritten' ? '<img src="' + officeSignatureImage + '" alt="Handwritten Signature">' : '<p class="preview-answer">' + officeTextSignature + '</p>'}
+                </div>
+                <p class="preview-question">Date: <span class="preview-answer">${signDate}</span></p>
+                <button onclick="window.print()">Print PDF</button>
+            </body>
+            </html>
+        `;
+
+        var newWindow = window.open('', '_blank');
+        newWindow.document.write(finalPage);
+        newWindow.document.close();
+    }
+
+    document.getElementById('signDate').valueAsDate = new Date();
+</script>
+</body>
+</html>

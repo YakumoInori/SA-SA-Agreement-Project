@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="tyrus-server-1.131">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/tyrus-server-1.13.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

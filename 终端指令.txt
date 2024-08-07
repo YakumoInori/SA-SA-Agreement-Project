@@ -1,0 +1,15 @@
+
+通用命令：
+启动 Java 程序：java -cp out:lib/* webcom.WebServer
+
+macOS 和 Linux：
+赋予可执行权限：chmod +x start_server.sh
+启动服务器脚本（start_server.sh 文件）：
+#!/bin/sh
+java -cp out:lib/* webcom.WebServer
+
+Windows：
+启动服务器批处理文件（start_server.bat 文件）：
+@echo off
+java -cp out;lib/* webcom.WebServer
+pause

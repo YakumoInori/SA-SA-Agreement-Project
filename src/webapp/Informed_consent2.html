@@ -179,18 +179,25 @@
 
     canvas.addEventListener('touchstart', function(e) {
         drawing = true;
+        var touch = e.touches[0];
         ctx.beginPath();
-        ctx.moveTo(e.touches[0].clientX - canvas.offsetLeft, e.touches[0].clientY - canvas.offsetTop);
+        ctx.moveTo(touch.clientX - canvas.getBoundingClientRect().left, touch.clientY - canvas.getBoundingClientRect().top);
     });
 
     canvas.addEventListener('touchmove', function(e) {
         if (drawing) {
-            ctx.lineTo(e.touches[0].clientX - canvas.offsetLeft, e.touches[0].clientY - canvas.offsetTop);
+            var touch = e.touches[0];
+            ctx.lineTo(touch.clientX - canvas.getBoundingClientRect().left, touch.clientY - canvas.getBoundingClientRect().top);
             ctx.stroke();
         }
+        e.preventDefault();
     });
 
     canvas.addEventListener('touchend', function() {
+        drawing = false;
+    });
+
+    canvas.addEventListener('touchcancel', function() {
         drawing = false;
     });
 
@@ -237,18 +244,25 @@
 
     officeCanvas.addEventListener('touchstart', function(e) {
         officeDrawing = true;
+        var touch = e.touches[0];
         officeCtx.beginPath();
-        officeCtx.moveTo(e.touches[0].clientX - officeCanvas.offsetLeft, e.touches[0].clientY - officeCanvas.offsetTop);
+        officeCtx.moveTo(touch.clientX - officeCanvas.getBoundingClientRect().left, touch.clientY - officeCanvas.getBoundingClientRect().top);
     });
 
     officeCanvas.addEventListener('touchmove', function(e) {
         if (officeDrawing) {
-            officeCtx.lineTo(e.touches[0].clientX - officeCanvas.offsetLeft, e.touches[0].clientY - officeCanvas.offsetTop);
+            var touch = e.touches[0];
+            officeCtx.lineTo(touch.clientX - officeCanvas.getBoundingClientRect().left, touch.clientY - officeCanvas.getBoundingClientRect().top);
             officeCtx.stroke();
         }
+        e.preventDefault();
     });
 
     officeCanvas.addEventListener('touchend', function() {
+        officeDrawing = false;
+    });
+
+    officeCanvas.addEventListener('touchcancel', function() {
         officeDrawing = false;
     });
 
@@ -339,3 +353,4 @@
 </script>
 </body>
 </html>
+

@@ -396,19 +396,27 @@
 
     patientCanvas.addEventListener('touchstart', function(e) {
         patientDrawing = true;
-        patientCtx.beginPath();
-        patientCtx.moveTo(e.touches[0].clientX - patientCanvas.offsetLeft, e.touches[0].clientY - patientCanvas.offsetTop);
+        var touch = e.touches[0];
+        var mouseEvent = new MouseEvent("mousedown", {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+        patientCanvas.dispatchEvent(mouseEvent);
     });
 
     patientCanvas.addEventListener('touchmove', function(e) {
-        if (patientDrawing) {
-            patientCtx.lineTo(e.touches[0].clientX - patientCanvas.offsetLeft, e.touches[0].clientY - patientCanvas.offsetTop);
-            patientCtx.stroke();
-        }
+        var touch = e.touches[0];
+        var mouseEvent = new MouseEvent("mousemove", {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+        patientCanvas.dispatchEvent(mouseEvent);
+        e.preventDefault();
     });
 
-    patientCanvas.addEventListener('touchend', function() {
-        patientDrawing = false;
+    patientCanvas.addEventListener('touchend', function(e) {
+        var mouseEvent = new MouseEvent("mouseup", {});
+        patientCanvas.dispatchEvent(mouseEvent);
     });
 
     function clearPatientCanvas() {
@@ -454,19 +462,27 @@
 
     officeCanvas.addEventListener('touchstart', function(e) {
         officeDrawing = true;
-        officeCtx.beginPath();
-        officeCtx.moveTo(e.touches[0].clientX - officeCanvas.offsetLeft, e.touches[0].clientY - officeCanvas.offsetTop);
+        var touch = e.touches[0];
+        var mouseEvent = new MouseEvent("mousedown", {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+        officeCanvas.dispatchEvent(mouseEvent);
     });
 
     officeCanvas.addEventListener('touchmove', function(e) {
-        if (officeDrawing) {
-            officeCtx.lineTo(e.touches[0].clientX - officeCanvas.offsetLeft, e.touches[0].clientY - officeCanvas.offsetTop);
-            officeCtx.stroke();
-        }
+        var touch = e.touches[0];
+        var mouseEvent = new MouseEvent("mousemove", {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+        officeCanvas.dispatchEvent(mouseEvent);
+        e.preventDefault();
     });
 
-    officeCanvas.addEventListener('touchend', function() {
-        officeDrawing = false;
+    officeCanvas.addEventListener('touchend', function(e) {
+        var mouseEvent = new MouseEvent("mouseup", {});
+        officeCanvas.dispatchEvent(mouseEvent);
     });
 
     function clearOfficeCanvas() {

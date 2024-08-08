@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Cases</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        h1, h2, h3 {
+            text-align: center;
+        }
+        p {
+            text-align: justify;
+            margin: 10px 0;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], input[type="date"], input[type="number"], select, textarea {
+            width: calc(100% - 22px);
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        canvas {
+            border: 1px solid black;
+            touch-action: none;
+        }
+        .signature-section {
+            margin-top: 20px;
+        }
+        button {
+            margin-top: 10px;
+        }
+        .signature-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .signature-box {
+            width: 100%;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+        }
+        .button-group button {
+            width: 48%;
+        }
+    </style>
+</head>
+<body>
+<h1>Patient Cases</h1>
+
+<form id="patientForm">
+    <label for="patientName">Patient Name:</label>
+    <input type="text" id="patientName" name="patientName">
+
+    <label for="gender">Gender:</label>
+    <select id="gender" name="gender">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+    </select>
+
+    <label for="dob">Date of Birth:</label>
+    <input type="date" id="dob" name="dob">
+
+    <label for="phone">Contact Phone:</label>
+    <input type="text" id="phone" name="phone">
+
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address">
+
+    <label for="includeInsurance">Include Insurance Information:</label>
+    <input type="checkbox" id="includeInsurance" name="includeInsurance" onclick="toggleInsuranceInfo()">
+
+    <div id="insuranceInfo" style="display:none;">
+        <label for="insuranceCompany">Insurance Company Name:</label>
+        <input type="text" id="insuranceCompany" name="insuranceCompany">
+
+        <label for="insuranceNumber">Insurance Number:</label>
+        <input type="text" id="insuranceNumber" name="insuranceNumber">
+
+        <label for="insuranceContact">Insurance Contact:</label>
+        <input type="text" id="insuranceContact" name="insuranceContact">
+
+        <label for="insurancePhone">Insurance Company Phone:</label>
+        <input type="text" id="insurancePhone" name="insurancePhone">
+    </div>
+
+    <label for="visitDate">Visit Date:</label>
+    <input type="date" id="visitDate" name="visitDate">
+
+    <label for="doctorName">Doctor Name:</label>
+    <input type="text" id="doctorName" name="doctorName">
+
+    <label for="clinicName">Clinic Name:</label>
+    <input type="text" id="clinicName" name="clinicName">
+
+    <label for="clinicAddress">Clinic Address:</label>
+    <input type="text" id="clinicAddress" name="clinicAddress">
+
+    <label for="clinicPhone">Clinic Phone:</label>
+    <input type="text" id="clinicPhone" name="clinicPhone">
+
+    <label for="chiefComplaint">Chief Complaint:</label>
+    <textarea id="chiefComplaint" name="chiefComplaint" rows="4" cols="50"></textarea>
+
+    <label for="medicalHistory">Medical History:</label>
+    <textarea id="medicalHistory" name="medicalHistory" rows="4" cols="50"></textarea>
+
+    <label for="currentSymptoms">Current Symptoms:</label>
+    <textarea id="currentSymptoms" name="currentSymptoms" rows="4" cols="50"></textarea>
+
+    <label for="primaryDiagnosis">Primary Diagnosis (ICD Code and Name):</label>
+    <input type="text" id="primaryDiagnosis" name="primaryDiagnosis">
+
+    <label for="secondaryDiagnosis">Secondary Diagnosis (ICD Code and Name):</label>
+    <input type="text" id="secondaryDiagnosis" name="secondaryDiagnosis">
+
+    <label for="treatmentPlan">Treatment Plan:</label>
+    <textarea id="treatmentPlan" name="treatmentPlan" rows="4" cols="50"></textarea>
+
+    <label for="acupuncturePoints">Acupuncture Points:</label>
+    <textarea id="acupuncturePoints" name="acupuncturePoints" rows="4" cols="50"></textarea>
+
+    <label for="treatmentFrequency">Treatment Frequency:</label>
+    <input type="text" id="treatmentFrequency" name="treatmentFrequency">
+
+    <label for="treatmentDuration">Treatment Duration:</label>
+    <input type="text" id="treatmentDuration" name="treatmentDuration">
+
+    <div class="signature-container">
+        <label for="signatureType">Select Signature Type</label>
+        <select id="signatureType" onchange="toggleSignatureType()">
+            <option value="typed">Typed Signature</option>
+            <option value="handwritten">Handwritten Signature</option>
+        </select>
+
+        <div id="typedSignature" class="signature-box">
+            <label for="typedSignatureInput">Doctor Signature (Typed)</label>
+            <input type="text" id="typedSignatureInput" placeholder="Enter signature">
+            <button type="button" onclick="saveTypedSignature()">Save Typed Signature</button>
+        </div>
+        <div id="handwrittenSignature" class="signature-box" style="display: none;">
+            <label for="signatureCanvas">Doctor Signature (Handwritten)</label>
+            <canvas id="signatureCanvas" width="500" height="200"></canvas>
+            <button type="button" onclick="clearCanvas()">Clear</button>
+            <button type="button" onclick="saveHandwrittenSignature()">Save Signature</button>
+        </div>
+    </div>
+
+    <label for="signDate">Date</label>
+    <input type="date" id="signDate" name="signDate" class="date-input">
+
+    <div class="button-group">
+        <button type="button" onclick="generateFinalPage()">Finish</button>
+    </div>
+</form>
+
+<script>
+    function toggleInsuranceInfo() {
+        var includeInsurance = document.getElementById('includeInsurance').checked;
+        document.getElementById('insuranceInfo').style.display = includeInsurance ? 'block' : 'none';
+    }
+
+    function toggleSignatureType() {
+        var signatureType = document.getElementById('signatureType').value;
+        if (signatureType === 'typed') {
+            document.getElementById('typedSignature').style.display = 'block';
+            document.getElementById('handwrittenSignature').style.display = 'none';
+        } else {
+            document.getElementById('typedSignature').style.display = 'none';
+            document.getElementById('handwrittenSignature').style.display = 'block';
+        }
+    }
+
+    var canvas = document.getElementById('signatureCanvas');
+    var ctx = canvas.getContext('2d');
+    var drawing = false;
+
+    canvas.addEventListener('mousedown', function(e) {
+        drawing = true;
+        ctx.beginPath();
+        ctx.moveTo(e.offsetX, e.offsetY);
+    });
+
+    canvas.addEventListener('mousemove', function(e) {
+        if (drawing) {
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+        }
+    });
+
+    canvas.addEventListener('mouseup', function() {
+        drawing = false;
+    });
+
+    canvas.addEventListener('mouseout', function() {
+        drawing = false;
+    });
+
+    canvas.addEventListener('touchstart', function(e) {
+        drawing = true;
+        var touch = e.touches[0];
+        var mouseEvent = new MouseEvent("mousedown", {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+        canvas.dispatchEvent(mouseEvent);
+    });
+
+    canvas.addEventListener('touchmove', function(e) {
+        var touch = e.touches[0];
+        var mouseEvent = new MouseEvent("mousemove", {
+            clientX: touch.clientX,
+            clientY: touch.clientY
+        });
+        canvas.dispatchEvent(mouseEvent);
+        e.preventDefault();
+    });
+
+    canvas.addEventListener('touchend', function() {
+        var mouseEvent = new MouseEvent("mouseup", {});
+        canvas.dispatchEvent(mouseEvent);
+    });
+
+    function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function saveHandwrittenSignature() {
+        var dataURL = canvas.toDataURL('image/png');
+        localStorage.setItem('signatureImage', dataURL);
+        alert('Handwritten signature saved');
+    }
+
+    function saveTypedSignature() {
+        var textSignature = document.getElementById('typedSignatureInput').value;
+        localStorage.setItem('textSignature', textSignature);
+        alert('Typed signature saved');
+    }
+
+    function generateFinalPage() {
+        var signatureType = document.getElementById('signatureType').value;
+        var signatureImage = localStorage.getItem('signatureImage');
+        var textSignature = localStorage.getItem('textSignature');
+        var signDate = document.getElementById('signDate').value;
+
+        var getFieldValue = (fieldId) => document.getElementById(fieldId).value || "N/A";
+        var getCheckedValues = (name) => [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(e => e.value).join(', ') || "N/A";
+
+        var finalPage = `
+            <html>
+            <head>
+                <title>Form Preview</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 20px;
+                        max-width: 800px;
+                        margin: auto;
+                    }
+                    h1, h2, h3 {
+                        text-align: center;
+                    }
+                    p {
+                        text-align: justify;
+                        margin: 10px 0;
+                    }
+                    .preview-question {
+                        color: black;
+                    }
+                    .preview-answer {
+                        color: deepskyblue;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>Patient Cases</h1>
+                <p><span class="preview-question">Patient Name:</span> <span class="preview-answer">${getFieldValue('patientName')}</span></p>
+                <p><span class="preview-question">Gender:</span> <span class="preview-answer">${getFieldValue('gender')}</span></p>
+                <p><span class="preview-question">Date of Birth:</span> <span class="preview-answer">${getFieldValue('dob')}</span></p>
+                <p><span class="preview-question">Contact Phone:</span> <span class="preview-answer">${getFieldValue('phone')}</span></p>
+                <p><span class="preview-question">Address:</span> <span class="preview-answer">${getFieldValue('address')}</span></p>
+
+                ${document.getElementById('includeInsurance').checked ? `
+                <h2>Insurance Information</h2>
+                <p><span class="preview-question">Insurance Company Name:</span> <span class="preview-answer">${getFieldValue('insuranceCompany')}</span></p>
+                <p><span class="preview-question">Insurance Number:</span> <span class="preview-answer">${getFieldValue('insuranceNumber')}</span></p>
+                <p><span class="preview-question">Insurance Contact:</span> <span class="preview-answer">${getFieldValue('insuranceContact')}</span></p>
+                <p><span class="preview-question">Insurance Company Phone:</span> <span class="preview-answer">${getFieldValue('insurancePhone')}</span></p>
+                ` : ''}
+
+                <h2>Visit Information</h2>
+                <p><span class="preview-question">Visit Date:</span> <span class="preview-answer">${getFieldValue('visitDate')}</span></p>
+                <p><span class="preview-question">Doctor Name:</span> <span class="preview-answer">${getFieldValue('doctorName')}</span></p>
+                <p><span class="preview-question">Clinic Name:</span> <span class="preview-answer">${getFieldValue('clinicName')}</span></p>
+                <p><span class="preview-question">Clinic Address:</span> <span class="preview-answer">${getFieldValue('clinicAddress')}</span></p>
+                <p><span class="preview-question">Clinic Phone:</span> <span class="preview-answer">${getFieldValue('clinicPhone')}</span></p>
+
+                <h2>Medical Information</h2>
+                <p><span class="preview-question">Chief Complaint:</span> <span class="preview-answer">${getFieldValue('chiefComplaint')}</span></p>
+                <p><span class="preview-question">Medical History:</span> <span class="preview-answer">${getFieldValue('medicalHistory')}</span></p>
+                <p><span class="preview-question">Current Symptoms:</span> <span class="preview-answer">${getFieldValue('currentSymptoms')}</span></p>
+                <p><span class="preview-question">Primary Diagnosis (ICD Code and Name):</span> <span class="preview-answer">${getFieldValue('primaryDiagnosis')}</span></p>
+                <p><span class="preview-question">Secondary Diagnosis (ICD Code and Name):</span> <span class="preview-answer">${getFieldValue('secondaryDiagnosis')}</span></p>
+
+                <h2>Treatment Information</h2>
+                <p><span class="preview-question">Treatment Plan:</span> <span class="preview-answer">${getFieldValue('treatmentPlan')}</span></p>
+                <p><span class="preview-question">Acupuncture Points:</span> <span class="preview-answer">${getFieldValue('acupuncturePoints')}</span></p>
+                <p><span class="preview-question">Treatment Frequency:</span> <span class="preview-answer">${getFieldValue('treatmentFrequency')}</span></p>
+                <p><span class="preview-question">Treatment Duration:</span> <span class="preview-answer">${getFieldValue('treatmentDuration')}</span></p>
+
+                <h2>Doctor's Signature</h2>
+                <div class="signature-section">
+                    <label class="preview-question">Doctor Signature (${signatureType === 'handwritten' ? 'Handwritten' : 'Typed'}):</label>
+                    ${signatureType === 'handwritten' ? '<img src="' + signatureImage + '" alt="Handwritten Signature">' : '<p class="preview-answer">' + textSignature + '</p>'}
+                </div>
+                <p class="preview-question">Date: <span class="preview-answer">${signDate}</span></p>
+                <button onclick="window.print()">Print PDF</button>
+            </body>
+            </html>
+        `;
+
+        var newWindow = window.open('', '_blank');
+        newWindow.document.write(finalPage);
+        newWindow.document.close();
+    }
+
+    document.getElementById('signDate').valueAsDate = new Date();
+</script>
+</body>
+</html>

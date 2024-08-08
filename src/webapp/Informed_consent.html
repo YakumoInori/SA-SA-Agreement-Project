@@ -151,6 +151,7 @@
             ctx.lineTo(e.touches[0].clientX - canvas.offsetLeft, e.touches[0].clientY - canvas.offsetTop);
             ctx.stroke();
         }
+        e.preventDefault();
     });
 
     canvas.addEventListener('touchend', function() {

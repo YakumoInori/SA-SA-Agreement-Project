@@ -118,17 +118,62 @@
     var canvas = document.getElementById('signatureCanvas');
     var ctx = canvas.getContext('2d');
     var drawing = false;
+    var lastX = 0;
+    var lastY = 0;
+
+    function getTouchPos(canvasDom, touchEvent) {
+        var rect = canvasDom.getBoundingClientRect();
+        return {
+            x: touchEvent.touches[0].clientX - rect.left,
+            y: touchEvent.touches[0].clientY - rect.top
+        };
+    }
+
+    function handleStart(evt) {
+        evt.preventDefault();
+        drawing = true;
+        var touchPos = getTouchPos(canvas, evt);
+        lastX = touchPos.x;
+        lastY = touchPos.y;
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+    }
+
+    function handleMove(evt) {
+        evt.preventDefault();
+        if (drawing) {
+            var touchPos = getTouchPos(canvas, evt);
+            ctx.lineTo(touchPos.x, touchPos.y);
+            ctx.stroke();
+            lastX = touchPos.x;
+            lastY = touchPos.y;
+        }
+    }
+
+    function handleEnd(evt) {
+        evt.preventDefault();
+        drawing = false;
+    }
+
+    function handleCancel(evt) {
+        evt.preventDefault();
+        drawing = false;
+    }
 
     canvas.addEventListener('mousedown', function(e) {
         drawing = true;
+        lastX = e.offsetX;
+        lastY = e.offsetY;
         ctx.beginPath();
-        ctx.moveTo(e.offsetX, e.offsetY);
+        ctx.moveTo(lastX, lastY);
     });
 
     canvas.addEventListener('mousemove', function(e) {
         if (drawing) {
             ctx.lineTo(e.offsetX, e.offsetY);
             ctx.stroke();
+            lastX = e.offsetX;
+            lastY = e.offsetY;
         }
     });
 
@@ -140,23 +185,10 @@
         drawing = false;
     });
 
-    canvas.addEventListener('touchstart', function(e) {
-        drawing = true;
-        ctx.beginPath();
-        ctx.moveTo(e.touches[0].clientX - canvas.offsetLeft, e.touches[0].clientY - canvas.offsetTop);
-    });
-
-    canvas.addEventListener('touchmove', function(e) {
-        if (drawing) {
-            ctx.lineTo(e.touches[0].clientX - canvas.offsetLeft, e.touches[0].clientY - canvas.offsetTop);
-            ctx.stroke();
-        }
-        e.preventDefault();
-    });
-
-    canvas.addEventListener('touchend', function() {
-        drawing = false;
-    });
+    canvas.addEventListener('touchstart', handleStart, false);
+    canvas.addEventListener('touchmove', handleMove, false);
+    canvas.addEventListener('touchend', handleEnd, false);
+    canvas.addEventListener('touchcancel', handleCancel, false);
 
     function clearCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);

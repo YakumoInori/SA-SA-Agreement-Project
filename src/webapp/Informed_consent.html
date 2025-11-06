@@ -101,7 +101,10 @@
 
 <div class="button-group">
     <button type="button" onclick="generateFinalPage()">Finish</button>
+     <button type="button" onclick="printCurrentOrBlank()">Printer</button>
 </div>
+
+
 
 <script>
     function toggleSignatureType() {
@@ -253,7 +256,7 @@
                     ${signatureType === 'handwritten' ? '<img src="' + signatureImage + '" alt="Handwritten Signature">' : '<p>' + textSignature + '</p>'}
                 </div>
                 <p>Date: ${signDate}</p>
-                <button onclick="window.print()">Print PDF</button>
+                <button onclick="window.print()">Print</button>
             </body>
             </html>
         `;
@@ -262,6 +265,10 @@
         newWindow.document.write(finalPage);
         newWindow.document.close();
     }
+
+     function printPage() {
+    window.print();
+  }
 
     document.getElementById('signDate').valueAsDate = new Date();
 </script>

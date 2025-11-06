@@ -101,7 +101,8 @@
 
 <div class="button-group">
     <button type="button" onclick="generateFinalPage()">Finish</button>
-     <button type="button" onclick="printCurrentOrBlank()">Printer</button>
+  <!-- 直接调用系统打印窗口：可选打印机或保存为 PDF -->
+      <button type="button" onclick="window.focus(); window.print();">Printer</button>
 </div>
 
 
@@ -266,14 +267,6 @@
         newWindow.document.close();
     }
 
-     function printPageImpl() {
-    window.focus();
-    // 某些浏览器需要短暂延迟才能可靠唤起打印框
-    setTimeout(() => window.print(), 0);
-  }
-  // 关键：挂到 window，确保内联 onclick 能找到
-  window.printPage = printPageImpl;
-  }
 
     document.getElementById('signDate').valueAsDate = new Date();
 </script>

@@ -126,7 +126,9 @@
 <p>(Or Patient Representative) (Indicate relationship if signing for patient)</p>
 
 <div class="button-group">
-    <button type="button" onclick="generateFinalPage()">Finish</button>
+     <button type="button" onclick="generateFinalPage()">Finish</button>
+  <!-- 直接调用系统打印窗口：可选打印机或保存为 PDF -->
+      <button type="button" onclick="window.focus(); window.print();">Printer</button>
 </div>
 
 <script>

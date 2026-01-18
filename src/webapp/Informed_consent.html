@@ -241,6 +241,7 @@
                         width: 100%;
                     }
                 </style>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
             </head>
             <body>
                 <h1>ACUPUNCTURE INFORMED CONSENT TO TREAT</h1>
@@ -257,7 +258,44 @@
                     ${signatureType === 'handwritten' ? '<img src="' + signatureImage + '" alt="Handwritten Signature">' : '<p>' + textSignature + '</p>'}
                 </div>
                 <p>Date: ${signDate}</p>
-                <button onclick="window.print()">Print</button>
+                <div id="previewButtons" style="margin-top:20px;">
+                    <button onclick="exportPNG()">Export PNG</button>
+                    <button onclick="window.print()">Print</button>
+                </div>
+                <script>
+                 function exportPNG() {
+                    var controls = document.getElementById('previewButtons');
+                    if (controls) controls.style.display = 'none';
+                    
+                    html2canvas(document.body, {
+                            scale: 2,
+                            useCORS: true
+                        }).then(function(canvas) {
+                            if (controls) controls.style.display = 'block';
+                    
+                            canvas.toBlob(function(blob) {
+                                var fileName = 'Acupuncture_Consent.png';
+                                var file = new File([blob], fileName, { type: 'image/png' });
+                    
+                                // iPad / iOS：调用系统分享
+                                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                                    navigator.share({
+                                        files: [file],
+                                        title: 'Acupuncture Consent',
+                                        text: 'Signed consent form'
+                                    });
+                                } else {
+                                    // 桌面浏览器：直接下载
+                                    var link = document.createElement('a');
+                                    link.href = URL.createObjectURL(blob);
+                                    link.download = fileName;
+                                    link.click();
+                                }
+                            });
+                        });
+                    }
+                 </script>
+
             </body>
             </html>
         `;
